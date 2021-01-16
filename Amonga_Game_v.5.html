@@ -1,0 +1,1211 @@
+<html>
+ <!--
+
+[ Code Is Under Construction ]
+
+Project : Amonga v.5 [ Game ]
+Lines : 1000+ 
+
+Developed By Tejas Kapade
+Powered By : Andro Coder
+Language : HTML5 , Js , CSS
+__________________________
+There's No Given Explanation in code.
+
+Takes me a 10+ Days to code this in my Phone.
+
+Used app :- Droid Edit
+
+YT : Andro Coder
+IG : Andro Coder
+Git: tejas-kapade
+
+-->
+ <head>
+   <meta name="viewport" content="width=device-width, user-scalable=no">
+ </head>
+ <body id="body">
+   <span id="score_txt" style="font-size:1em;color:#fff">Score Here</span>
+   <span id="time_txt" style="font-size:1em;color:#fff; position:fixed; right:5%;">Time Here</span>
+   <canvas id="cnv" width="500" height="500"></canvas>
+   <div id="btn_frame"></div>
+ <div id="joy_stick_1"> 
+<span style="font-size:1em;color:#fff; position: absolute;left:20%;top:-40%;">Move</span>
+ <div id="stick_ball_1">
+ </div>
+</div>
+    
+ <div id="joy_stick_2"> 
+<span style="font-size:1em;color:#fff; position: absolute;left:35%;top:-40%;">Aim</span>
+ <div id="stick_ball_2">
+ </div>
+</div>
+
+  <div id="Player_man1">
+   <span id="info_txt" style="color: tomato;text-shadow:0 0 10px #000,
+0 0 20px #000,
+0 0 40px #000;
+display: none;
+background:#fff;
+font-size:15em; z-index:10; position: absolute; font-family:courier;top:-40%;
+left:8%; transform:none;"> -200 </span>
+ <div id="Player_body">
+     <div id="Player_helmet"></div>
+ </div>
+
+ <div id="Player_bag"></div>
+ <div id="Player_legs1"></div>
+ <div id="Player_legs2"></div>
+</div>
+
+ <div id="Player_man2">
+ <div id="Player_body2">
+     <div id="Player_helmet2"></div>
+ </div>
+
+ <div id="Player_bag"></div>
+ <div id="Player_legs3"></div>
+ <div id="Player_legs4"></div>
+</div>
+
+<div id="main_game_map">
+<div id="Game_map_1">
+
+ <div id="Wall_1">A</div>
+  <div id="Wall_2">B</div>
+  <div id="Wall_3">C</div>
+
+   <div id="Wall_4">D</div>
+  <div id="Wall_5">E</div>
+  <div id="Wall_6">F</div>
+ 
+    <div id="Wall_7">G</div>
+  <div id="Wall_8">H</div>
+  <div id="Wall_9">I</div>
+
+</div>
+<!--
+<div id="Game_map_2">
+
+ <div id="Wall_1"></div>
+  <div id="Wall_2"></div>
+  <div id="Wall_3"></div>
+
+   <div id="Wall_4"></div>
+  <div id="Wall_5"></div>
+  <div id="Wall_6"></div>
+ 
+    <div id="Wall_7"></div>
+  <div id="Wall_8"></div>
+  <div id="Wall_9"></div>
+
+</div>
+-->
+
+</div>
+<!--
+JavaScript as Follows
+-->
+<script>
+
+var graphic_Player= document.getElementById("Player_man1");
+var graphic_Player2= document.getElementById("Player_man2");
+
+var graphic_Player_h= document.getElementById("Player_helmet");
+var graphic_Player_h2= document.getElementById("Player_helmet2");
+
+var Game_map= document.getElementById("main_game_map");
+var score_txt= document.getElementById("score_txt");
+var time_txt= document.getElementById("time_txt");
+var info_txt= document.getElementById("info_txt");
+
+//var Game_map_cnv= document.getElementById("cnv");
+
+
+var player_leg_1=document.getElementById("Player_legs1");
+var player_leg_2=document.getElementById("Player_legs2");
+
+var player_leg_3=document.getElementById("Player_legs3");
+var player_leg_4=document.getElementById("Player_legs4");
+
+
+
+var player_bag_c=document.getElementById("Player_bag");
+
+function intro_module(){
+alert(" Hey There!.. welcome to 4.0 update of Amonga Game!, What's new ??___ Added Enemy that will follow you every time !! and Throws at u Bombs , Beware of that otherwise score will be -200, show your skills and let's see how much score can u do!!! and thx for playing... Code by Andro Coder____Hava Nice Day");
+
+alert("Maybe you See game is Lagging , bcz of Low Speed of chrome Data processing... but i managed to minimize your Data Processing but still you may suffer from Choppy game play___, We are sorry for That______Enjoy!!");
+
+alert("And Interesting Thing is......You Can't kill That Enemy!!! he will irritated you at your every Step !!!...Hahahahahhaha lol")
+
+alert("It takes me to more than 1000 lines of code , i spend lots of hours to make this....so please support , Upvote....And Subscribe my you tube channel !! ---Andro Coder");
+}
+
+intro_module();
+
+var cc= document.getElementById("cnv");
+var c= cc.getContext("2d");
+w=500;
+h=500;
+var mpx=0;
+var mpy=0;
+var mvx=0;
+var mvy=0;
+var walk= false;
+var Fpos=3;
+var score=0;
+var time=180;
+
+let fbpx=200;
+let fbpy=200;
+
+
+c.fillStyle="#111";
+c.fillRect(0,0,w,h);
+
+function ran(min,max){
+this.min=min;
+this.max=max;
+this.val=Math.ceil(Math.random()*(this.max-this.min)+this.min);
+return this.val;
+};
+
+var joy_stick_1= document.getElementById("joy_stick_1");
+var joy_stick_2= document.getElementById("joy_stick_2");
+var stick_ball_1= document.getElementById("stick_ball_1");
+var stick_ball_2= document.getElementById("stick_ball_2");
+
+joy_stick_1.addEventListener('touchstart', function(e){
+e.preventDefault();
+
+stick_ball_1.style.top= e.targetTouches[0].clientY-528 + "px" ;
+stick_ball_1.style.left= e.targetTouches[0].clientX-85 + "px";
+// time_txt.innerHTML= o_vx+"_"+o_vy;
+
+});
+
+//Developed By Tejas Kapade
+//YT : Andro Coder
+
+joy_stick_2.addEventListener('touchstart', function(e){
+e.preventDefault();
+
+stick_ball_2.style.top= e.targetTouches[0].clientY-500 + "px" ;
+stick_ball_2.style.left= e.targetTouches[0].clientX-260 + "px";
+});
+o_vx=0;
+o_vy=0;
+m_vx=0;
+m_vy=0;
+joy_stick_1.addEventListener('touchmove', function(e){
+e.preventDefault();
+stick_ball_1.style.top= e.targetTouches[0].clientY-528 + "px" ;
+stick_ball_1.style.left= e.targetTouches[0].clientX-85 + "px";
+
+walk=true;
+
+o_vx=e.targetTouches[0].clientX-118+1.5;
+o_vy=e.targetTouches[0].clientY-500-23;
+
+});
+
+joy_stick_2.addEventListener('touchmove', function(e){
+e.preventDefault();
+
+stick_ball_2.style.top= e.targetTouches[0].clientY-530+ "px" ;
+
+stick_ball_2.style.left= e.targetTouches[0].clientX-250 + "px";
+
+time_txt.innerHTML= m_vx+"_"+m_vy;
+
+m_vx= e.targetTouches[0].clientX-266 ;
+m_vy= e.targetTouches[0].clientY-524;
+
+Fire_ball(m_vx,m_vy);
+
+});
+
+joy_stick_1.addEventListener('touchend', function(e){
+e.preventDefault()
+stick_ball_1.style.top= "25%" ;
+stick_ball_1.style.left= "25%";
+o_vx=0;
+o_vy=0;
+stop();
+//walk="false";
+});
+
+joy_stick_2.addEventListener('touchend', function(e){
+e.preventDefault()
+stick_ball_2.style.top= "25%" ;
+stick_ball_2.style.left= "25%";
+m_vx=0;
+m_vy=0;
+});
+
+
+
+
+function up(){
+mvx = 0;
+mvy = 2;
+//Fpos=1;
+//fbpy -= 2;
+walk= true;
+graphic_Player_h.style.transform="rotate(-10deg)";
+graphic_Player_h.style.left="30%";
+graphic_Player_h.style.top="10%";
+
+//Game_map.style.top=mpy + "px"
+}
+function right(){
+mvx = -2;
+mvy = 0;
+//Fpos=2;
+//fbpx += 2;
+walk= true;
+graphic_Player_h.style.transform="rotate(0deg)";
+graphic_Player_h.style.left="40%";
+graphic_Player_h.style.top="18%";
+info_txt.style.transform="scaleX(1)";
+
+graphic_Player.style.transform="scaleX(1) scale(0.099)";
+}
+function down(){
+mvx = 0;
+mvy = -2;
+//Fpos=3;
+//fbpy += 2;
+walk= true;
+graphic_Player_h.style.transform="rotate(10deg)";
+graphic_Player_h.style.left="30%";
+graphic_Player_h.style.top="30%";
+//Game_map.style.top=mpy + "px"
+}
+
+//Developed By Tejas Kapade
+//YT : Andro Coder
+
+function left(){
+mvx = 2;
+mvy = 0;
+walk= true;
+//Fpos=4;
+//fbpx -= 2;
+graphic_Player_h.style.transform="rotate(0deg)";
+graphic_Player_h.style.left="40%";
+graphic_Player_h.style.top="18%";
+info_txt.style.transform="scaleX(-1)";
+graphic_Player.style.transform="scaleX(-1) scale(0.099)";
+
+
+//Game_map.style.left=mpx + "px"
+}
+function stop(){
+mvx = 0;
+mvy = 0;
+walk= false;
+//Game_map.style.left=mpx + "px"
+}
+
+//fire objects
+F_col=["#f00",
+"#FFF7EC",
+"#f00"];
+E_col=["#F27DFF",
+"#fff",
+"#F27DFF"];
+X_col=["#111",
+"#515151",
+"#111"];
+
+time_plus=1;
+
+function countdown(){
+time -= time_plus;
+time_txt.innerHTML="Time Left: "+time;
+if(time <= -1){
+time=0;
+time_plus=0;
+alert("Time Out , Last Score was: "+score+"_____Thanks For Playing --Free Play is activated! -AndroCoder- ");
+}
+}
+//setInterval(countdown,1000);
+
+class Fire{
+constructor(x,y,vx,vy,r,col){
+this.x=x;
+this.y=y;
+this.vx=vx;
+this.vy=vy;
+this.r=r;
+this.col=col;
+}
+draw(){
+ c.beginPath();
+ c.fillStyle=this.col;
+ c.arc(this.x,this.y,this.r,0,2*Math.PI);
+ c.fill();
+ 
+}
+update(){
+ this.draw();
+ this.col= F_col[ran(0,2)];
+ this.x += this.vx;
+ this.y += this.vy;
+}
+}
+
+class Firea{
+constructor(x,y,vx,vy,r,col){
+this.x=x;
+this.y=y;
+this.vx=vx;
+this.vy=vy;
+this.r=r;
+this.col=col;
+}
+draw(){
+ c.beginPath();
+ c.fillStyle=this.col;
+ c.arc(this.x,this.y,this.r,0,2*Math.PI);
+ c.fill();
+ 
+}
+update(){
+ this.draw();
+ this.col= X_col[ran(0,2)];
+ this.x += this.vx;
+ this.y += this.vy;
+}
+}
+
+class Enemy{
+constructor(x,y,vx,vy,r,col){
+this.x=x;
+this.y=y;
+this.vx=vx;
+this.vy=vy;
+this.r=r;
+this.col=col;
+}
+draw(){
+ c.beginPath();
+ c.fillStyle=this.col;
+ c.arc(this.x,this.y,this.r,0,2*Math.PI);
+ c.fill();
+ 
+}
+update(){
+ this.draw();
+ this.col= E_col[ran(0,2)];
+ this.x += this.vx;
+ this.y += this.vy;
+}
+}
+
+class Defender{
+constructor(x,y,vx,vy,r,col){
+this.x=x;
+this.y=y;
+this.vx=vx;
+this.vy=vy;
+this.r=r;
+this.col=col;
+this.vshake = 0;
+this.vmshake=0.8;
+}
+draw(){
+ c.beginPath();
+ c.fillStyle=this.col;
+ c.arc(this.x,this.y,this.r,0,2*Math.PI);
+ c.fill();
+ 
+}
+update(){
+ this.draw(); 
+ 
+ this.D_Atn= Math.atan2(fbpy - this.y, fbpx - this.x);
+
+ this.vy=Math.sin(this.D_Atn)*0.3;
+ this.vx=Math.cos(this.D_Atn)*0.3;
+
+if(this.x == fbpx && this.y == fbpy){
+this.vx =0;
+this.vy =0;
+}
+  this.vshake += this.vmshake;
+  if(this.vshake > 8 || this.vshake < -8){
+   this.vmshake = - this.vmshake;
+
+}
+  this.shake=this.vshake;
+  graphic_Player2.style.top= this.y-fbpy-100+this.shake + "px";
+ graphic_Player2.style.left= this.x-fbpx-100 + "px";
+ //this.col= F_col[ran(0,2)];
+
+ if(this.vx > 0){
+graphic_Player2.style.transform="scaleX(1) scale(0.099)";
+}
+ if(this.vx < 0){
+graphic_Player2.style.transform="scaleX(-1) scale(0.099)";
+}
+ if(this.vy < 0){
+ graphic_Player_h2.style.transform="rotate(10deg)";
+graphic_Player_h2.style.left="30%";
+graphic_Player_h2.style.top="10%";
+
+}
+if(this.vy > 0){
+graphic_Player_h2.style.left="30%";
+graphic_Player_h2.style.top="30%";
+ graphic_Player_h2.style.transform="rotate(-10deg)";
+}
+
+
+ this.x += this.vx;
+ this.y += this.vy;
+}
+}
+
+function Wall(x,y,w,h,col){
+this.x=x;
+this.y=y;
+this.w=w;
+this.h=h;
+this.col=col;
+ this.draw=function(){
+c.fillStyle=this.col; c.fillRect(this.x,this.y,this.w,this.h);
+}
+}
+
+Wall_A= new Wall(100,100,100,100,"#111");
+
+
+enemys = [];
+fireBalls = [];
+defenders = [];
+fireEnemy = [];
+
+
+function fireSpawn(){
+setInterval(()=>{
+defenders.forEach(ball=> {
+PX = ball.x;
+PY = ball.y;
+
+X_Atn= Math.atan2(fbpy - PY, fbpx - PX);
+
+X_vy=Math.sin(X_Atn)*0.8;
+X_vx=Math.cos(X_Atn)*0.8;
+info_txt.style.display="none";
+
+
+fireEnemy.push(new Firea(PX,PY,X_vx,X_vy,10,"fff"));
+
+});
+},1500);
+}
+
+fireSpawn();
+
+function enemySpawn(){
+setInterval(()=>{
+posy= 0;
+
+evx=ran(-2,2);
+evy=ran(1,3);
+er=ran(10,20);
+posx= ran(er,w-er);
+enemys.push(new Enemy(posx,posy,evx,evy,er,"#f00"));
+},600);
+}
+enemySpawn();
+
+
+
+F_vx=2;
+F_vy=0;
+
+//Developed By Tejas Kapade
+//YT : Andro Coder
+
+function add_Defender(){
+
+D_px=ran(50,w-50);
+D_py=ran(50,h-50);
+D_Atn= Math.atan2(fbpy - D_py, fbpx - D_px);
+
+D_vy=Math.sin(D_Atn)*2;
+D_vx=Math.cos(D_Atn)*2;
+
+if(D_px == fbpx && D_py == fbpy){
+D_vy =0;
+D_vx =0;
+}
+
+defenders.push(new Defender(
+D_px,D_py,D_vx,D_vy,10,"#000"
+));
+
+}
+add_Defender();
+
+// Developed By Tejas
+// YT Andro Coder
+
+function Fire_ball(x,y){
+this.x=x;
+this.y=y;
+this.x *= 0.02;
+this.y *= 0.02;
+if(Fpos == 1){
+ F_vx = 0;
+ F_vy = -4
+}
+if(Fpos == 2){
+ F_vx = 4;
+ F_vy = 0;
+} 
+if(Fpos == 3){
+ F_vx = 0;
+ F_vy = 4;
+}
+if(Fpos == 4){
+ F_vx = -4;
+ F_vy = 0;
+}
+ 
+ fireBalls.push(new Fire(fbpx,fbpy,this.x, this.y,6,"#fff"));
+}
+function expParticle(x,y,vx,vy,r,col){
+this.x=x;
+this.y=y;
+this.vx=vx;
+this.vy=vy;
+this.col=col;
+this.r=r;
+this.draw= function (){
+c.beginPath();
+c.fillStyle=this.col;
+c.arc(this.x,this.y,this.r,0,2*Math.PI);
+c.fill();
+}
+this.update = function(){
+this.draw();
+//this.vy += 0.08;
+if(this.vx < 2 && this.vx > -2 ){
+this.vx = 3;
+}
+if(this.vy < 2 && this.vy > -2 ){
+this.vy = 3;
+}
+
+this.x += this.vx;
+this.y += this.vy;
+
+}
+}
+Ex_part=[];
+function explosion(x,y,r,col){
+this.x=x;
+this.y=y;
+this.col=col;
+this.r=r;
+ for(i=0;i<=3;i++){
+ Ex_part.push( new expParticle(this.x,this.y,ran(-4,4),ran(-4,4),this.r,this.col) );
+}
+}
+
+//utility units for CSS
+lr1=0;
+lr2=0;
+lr21=0;
+lr22=0;
+
+lr1v=3;
+lr2v=3;
+lr21v=3;
+lr22v=3;
+
+shake=-14;
+shakevy=0.1;
+
+
+//Universal animation Function
+
+
+
+function animate(){
+//Wall_A.draw();
+
+mpx += -o_vx*0.025;
+mpy += -o_vy*0.02;
+
+
+fbpx -= -o_vx*0.025;
+fbpy -= -o_vy*0.02;
+
+if(fbpx > w-10 || fbpx < 40){mvx=0}
+if(fbpy > h-40 || fbpy < 40){mvy=0}
+
+
+c.clearRect(0,0,w,h);
+
+enemys.forEach((ball,index)=>{
+ball.update();
+fireBalls.forEach((particle,pindex)=>{
+hypo= Math.hypot(particle.x - ball.x , particle.y - ball.y);
+
+if(hypo < 8+ball.r){
+score += 100;
+explosion(particle.x, particle.y,4,"#F49EFF");
+explosion(particle.x, particle.y,6,"#ff0");
+
+enemys.splice(index,1);
+fireBalls.splice(pindex,1);
+
+}
+
+}); 
+if(ball.y > h){
+enemys.splice(index,1);
+}
+});
+
+fireBalls.forEach((balls,index)=>{
+balls.update();
+defenders.forEach(ball=>{
+
+//hyp_ee= Math.hypot(balls.x-ball.x,balls.y-ball.y);
+//if(hyp_ee < 12){score += 1;}
+
+
+//fireEnemy.forEach(Call=>{
+//Call.x = ball.x;
+//Call.y = ball.y;
+//});
+});
+if(balls.x > w-30 || balls.y > h-40 || balls.x < 40 || balls.y < 40){
+explosion(balls.x,balls.y,2,"#ff0");
+
+fireBalls.splice(index,1);
+}
+});
+
+//expParticle.draw();
+Ex_part.forEach((part,index)=>{
+part.update();
+if(part.y > h || part.x > w || part.y < 0 || part.x < 0){
+Ex_part.splice(index,1);
+}
+});
+
+lr21 += lr21v;
+lr22 -= lr22v;
+
+if(lr21 > 60 ){
+lr21v = - lr21v;
+}
+if(lr21 < 0){
+lr21v = - lr21v;
+}
+if(lr22 < -60){
+lr22v = - lr22v;
+}
+if(lr22 > 0){
+lr22v = - lr22v;
+}
+
+player_leg_3.style.transform="rotate("+lr21+"deg)";
+player_leg_4.style.transform="rotate("+lr22+"deg)";
+
+if(walk==true){
+lr1 += lr1v;
+lr2 -= lr2v;
+
+
+shake += shakevy;
+if(shake > -13){
+shakevy = - shakevy;
+}
+if(shake < -15){
+shakevy = - shakevy;
+}
+
+if(lr1 > 60 ){
+lr1v = - lr1v;
+}
+if(lr1 < 0){
+lr1v = - lr1v;
+}
+if(lr2 < -60 ){
+lr2v = - lr2v;
+}
+if(lr2 > 0){
+lr2v = - lr2v;
+}
+
+
+graphic_Player.style.top=shake+"%";
+ player_leg_1.style.transform="rotate("+lr1+"deg)";
+player_leg_2.style.transform="rotate("+lr2+"deg)";
+
+
+
+}
+if(walk==false){
+lr1=0;
+lr2=0;
+player_leg_1.style.transform="rotate("+lr1+"deg)";
+player_leg_2.style.transform="rotate("+lr2+"deg)";
+
+graphic_Player.style.top= -14+"%";
+}
+
+defenders.forEach(ball=>{
+ball.update();
+//fireEnemy.forEach(Call=>{
+//Call.x = ball.x;
+//Call.y = ball.y;
+//});
+
+});
+
+fireEnemy.forEach((ball,index)=>{
+ball.update();
+
+hyp_c = Math.hypot(fbpx - ball.x , fbpy - ball.y);
+if(hyp_c < 20){
+info_txt.style.display="block";
+score -= 200;
+fireEnemy.splice(index,1);
+}
+
+
+if(ball.x > w || ball.x < 0 || ball.y > h || ball.y < 0){
+fireEnemy.splice(index,1);
+}
+});
+
+//Developed By Tejas Kapade
+//YT : Andro Coder
+
+
+Game_map.style.left= mpx + "px";
+Game_map.style.top= mpy + "px";
+
+cc.style.top = mpy + "px";
+cc.style.left= mpx + "px";
+
+score_txt.innerHTML="Score: "+score;
+
+}
+
+setInterval(animate,10);
+
+
+</script>
+
+
+ </body>
+
+<!--CSS as Follows-->
+
+ <style>
+#body{
+overflow: hidden;
+background:#111;
+}
+#cnv
+{
+position: absolute;
+}
+
+/*Developed By Tejas Kapade
+YT : Andro Coder */
+
+#Player_man1{
+position: absolute;
+width:600px;
+height:600px;
+z-index:5;
+top:-14%;
+left:-30%;
+transform: scale(0.099);
+}
+#Player_man2{
+position: absolute;
+width:600px;
+height:600px;
+z-index:5;
+top:-14%;
+left:-30%;
+transform: scale(0.099);
+}
+
+#Player_body{
+position: absolute;
+width:40%;
+height:65%;
+top:10%;
+left:40%;
+background:#FFE300;
+border-radius:50% 50% 1cm 1cm;
+border:1px solid #111;
+
+}
+
+#Player_body2{
+position: absolute;
+width:40%;
+height:65%;
+top:10%;
+left:40%;
+background:#FF6400;
+border-radius:50% 50% 1cm 1cm;
+border:1px solid #111;
+
+}
+/*Developed By Tejas Kapade
+YT : Andro Coder */
+#Player_body::before{
+content:'';
+position: absolute;
+width:100%;
+height:40%;
+background:#FFA800;
+border-radius:40% 40% 1cm 1cm;
+border:5px solid #111;
+}
+#Player_body::after{
+content:'';
+position: absolute;
+width:50%;
+height:35%;
+background:#fff;
+top:3%;
+opacity:0.5;
+border-radius:50% 40% 1cm 1cm;
+}
+
+#Player_body2::before{
+content:'';
+position: absolute;
+width:100%;
+height:40%;
+background:#FF8200;
+border-radius:40% 40% 1cm 1cm;
+border:5px solid #111;
+}
+#Player_body2::after{
+content:'';
+position: absolute;
+width:50%;
+height:35%;
+background:#fff;
+top:3%;
+opacity:0.5;
+border-radius:50% 40% 1cm 1cm;
+}
+
+#Player_helmet{
+position: absolute;
+width:80%;
+height:15%;
+background:#111;
+border-radius:1cm;
+top:18%;left:40%;
+border:2px solid #fff;
+}
+#Player_helmet::before{
+content:'';
+position: absolute;
+width:60%;
+height:23%;
+background:#fff;
+border-radius:2cm;
+top:15%;left:40%;
+}
+
+
+#Player_helmet2{
+position: absolute;
+width:80%;
+height:15%;
+background:#111;
+border-radius:1cm;
+top:18%;left:40%;
+border:2px solid #fff;
+}
+#Player_helmet2::before{
+content:'';
+position: absolute;
+width:60%;
+height:23%;
+background:#fff;
+border-radius:2cm;
+top:15%;left:40%;
+}
+
+
+
+#Player_bag{
+position: absolute;
+width:20%;
+height:42%;
+top:32%;
+left:28%;
+background:#7AE1FF;
+border-radius:1cm;
+border:10px solid #111;
+z-index:-1;
+}
+#Player_legs1{
+position: absolute;
+width:18%;
+height:35%;
+top:69%;
+left:40%;
+background:#FFE300;
+border-radius:0 0 1cm 1cm;
+border:10px solid #111;
+border-top:1px solid transparent;
+transform-origin:top;
+
+}
+
+/*Developed By Tejas Kapade
+YT : Andro Coder */
+
+#Player_legs2{
+position: absolute;
+width:18%;
+height:35%;
+top:69%;
+left:61%;
+background:#FFE300;
+border:10px solid #111;
+border-radius:0 0 1cm 1cm;
+border-top:3px solid transparent;
+transform-origin:top;
+}
+
+#Player_legs3{
+position: absolute;
+width:18%;
+height:35%;
+top:69%;
+left:40%;
+background:#FF6C00;
+border-radius:0 0 1cm 1cm;
+border:10px solid #111;
+border-top:1px solid transparent;
+transform-origin:top;
+
+}
+#Player_legs4{
+position: absolute;
+width:18%;
+height:35%;
+top:69%;
+left:61%;
+background:#FF6C00;
+border:10px solid #111;
+border-radius:0 0 1cm 1cm;
+border-top:3px solid transparent;
+transform-origin:top;
+}
+
+#main_game_map{
+position: absolute;
+width:380px;
+height:420px;
+background:#fff;
+top:0%;
+left:0%;
+z-index:-5;
+transform:scale(1);
+font-size:6.5em;
+color:#838383;
+opacity:0.8;
+}
+#Game_map_1{
+position: absolute;
+width:500px;
+height:500px;
+top:0%;
+left:0%;
+border:10px solid #636363;
+border-radius:0.5cm;
+background:#fff;
+}
+#Game_map_2{ 
+position: absolute;
+width:500px;
+height:500px;
+top:55%;
+left:30%;
+border:10px solid #636363;
+border-radius:0.5cm;
+background:#fff;
+}
+#Wall_1{
+position: absolute;
+width:33%;
+height:33%;
+border:8px2px solid #636363;
+background:#E2FF00;
+top:0;
+left:0;text-align:center;
+}
+#Wall_2{
+position: absolute;
+width:33%;
+height:33%;
+border:2px solid #636363;
+background:#FF8ECB;
+text-align:center;
+top:0;
+left:33%;
+}
+#Wall_3{
+position: absolute;
+background:#98EAFF;
+width:33%;
+height:33%;
+border:2px solid #636363;
+top:0;
+left:66%;text-align:center;
+}
+/*Developed By Tejas Kapade
+YT : Andro Coder */
+#Wall_4{
+position: absolute;
+width:33%;
+height:33%;
+background:#A7FFB5;
+border:2px solid #636363;
+top:33%;
+left:0;text-align:center;
+}
+#Wall_5{
+position: absolute;
+width:33%;
+height:33%;
+background:#FFC9A1;
+border:2px solid #636363;
+top:33%;
+left:33%;text-align:center;
+}
+#Wall_6{
+position: absolute;
+width:33%;
+height:33%;
+background:#fff;
+border:2px solid #636363;
+top:33%;
+left:66%;text-align:center;
+}
+
+#Wall_7{
+position: absolute;
+width:33%;
+height:33%;
+background:#DDDDDD;
+border:2px solid #636363;
+top:66%;
+left:0;text-align:center;
+}
+#Wall_8{
+position: absolute;
+width:33%;
+height:33%;
+border:2px solid #636363;
+background:#979DFF;
+top:66%;
+left:33%;text-align:center;
+}
+#Wall_9{
+position: absolute;
+width:33%;
+height:33%;
+border:2px solid #636363;
+background:#EC9AFF;
+top:66%;
+left:66%;text-align:center;
+}
+#btn_frame{
+position: fixed;
+width:400px;
+height:200px;
+background:#111;
+z-index:-2;
+left:0;bottom:0;
+}
+#btn_frame::before{
+content:'';
+position:fixed;
+width:400px;
+height:500px;
+top:0;
+left:0;
+opacity:0.8;
+background:radial-gradient(transparent,#111);
+}
+
+#joy_stick_1{
+position:fixed;
+width:80px;
+height:80px;
+top:76%;
+left:18%;
+border:10px solid #858585;
+border-radius:2cm;
+
+box-shadow:0 0 20px 0 #111,
+ 0 0 40px 0 #111;
+}
+#stick_ball_1{
+position: relative;
+top:25%;
+left:25%;
+width:50%;
+height:50%;
+background:#FFBA26;
+border-radius:50%;
+box-shadow:0 0 20px 0 #111,
+ 0 0 40px 0 #111;
+}
+
+
+#joy_stick_2{
+position:fixed;
+width:80px;
+height:80px;
+top:76%;
+left:58%;
+border:8px solid #858585;
+border-radius:2cm;
+box-shadow:0 0 20px 0 #111,
+ 0 0 40px 0 #111;
+}
+/*Developed By Tejas Kapade
+YT : Andro Coder */
+#stick_ball_2{
+position: relative;
+top:25%;
+left:25%;
+width:50%;
+height:50%;
+background:#FFBA26;
+border-radius:50%;
+box-shadow:0 0 20px 0 #111,
+ 0 0 40px 0 #111;
+}
+/*Developed By Tejas Kapade
+YT : Andro Coder */
+
+ </style>
+</html>
